@@ -60,6 +60,9 @@ public class EventListener implements Listener {
             core.display.setVisible(false);
             core.display.setHelmet(new ItemStack(Material.ANVIL));
         }
+
+        core.timer.setHealth(0);
+        core.timer = null;
     }
 
     @EventHandler

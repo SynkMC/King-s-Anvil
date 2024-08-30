@@ -43,6 +43,7 @@ public final class KingsAnvil extends JavaPlugin implements SynkPlugin {
     public Player holder = null;
     public int endTime = 0;
     public ArmorStand display;
+    public ArmorStand timer;
 
     public List<String> scoreboardLines = new ArrayList<>();
     public Map<UUID, FastBoard> boardMap = new HashMap<>();

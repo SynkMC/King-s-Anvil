@@ -64,22 +64,5 @@ public class ScoreboardManager {
             core.boardMap.put(p.getUniqueId(), fB);
         }
     }
-    public static BukkitRunnable updateBoards = new BukkitRunnable() {
-        @Override
-        public void run() {
-            if (core.isRunning && core.sbd) {
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    List<String> list = new ArrayList<>();
-                    for (String s : core.scoreboardLines) {
-                        s = PlaceholderAPI.setPlaceholders(p, s);
-                        list.add(s);
-                    }
 
-                    FastBoard fB = core.boardMap.get(p.getUniqueId());
-                    fB.updateLines(list);
-                    core.boardMap.replace(p.getUniqueId(), fB);
-                }
-            } else this.cancel();
-        }
-    };
 }

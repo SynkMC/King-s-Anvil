@@ -5,7 +5,11 @@ import cc.synkdev.kingsAnvil.Util;
 import cc.synkdev.kingsAnvil.objects.LeaderboardLine;
 import cc.synkdev.synkLibs.bukkit.SynkLibs;
 import cc.synkdev.synkLibs.bukkit.Utils;
+import fr.mrmicky.fastboard.FastBoard;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -40,7 +44,7 @@ public class MiniGameManager {
                     ScoreboardManager.createBoard(p);
                 }
 
-                ScoreboardManager.updateBoards.runTaskTimer(core, 10, 10);
+                runningLoop.runTaskTimer(core, 10, 10);
             }
 
             core.endTime = Math.toIntExact(System.currentTimeMillis() / 1000) + core.duration;
@@ -92,10 +96,12 @@ public class MiniGameManager {
             if (core.isRunning) {
                 if (core.currLocation != null) {
                     core.currLocation.getBlock().setType(Material.AIR);
+                    core.timer.setHealth(0);
+                    core.timer = null;
                 }
 
                 if (core.sbd) {
-                    ScoreboardManager.updateBoards.cancel();
+                    runningLoop.cancel();
                     core.boardMap.forEach((uuid, fastBoard) -> {
                         fastBoard.delete();
                     });
@@ -149,6 +155,35 @@ public class MiniGameManager {
                 core.timeHeld.clear();
                 core.isRunning = false;
             }
+        }
+    };
+    public static BukkitRunnable runningLoop = new BukkitRunnable() {
+        @Override
+        public void run() {
+            if (core.isRunning) {
+                if (core.sbd) {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        List<String> list = new ArrayList<>();
+                        for (String s : core.scoreboardLines) {
+                            s = PlaceholderAPI.setPlaceholders(p, s);
+                            list.add(s);
+                        }
+
+                        FastBoard fB = core.boardMap.get(p.getUniqueId());
+                        fB.updateLines(list);
+                        core.boardMap.replace(p.getUniqueId(), fB);
+                    }
+                }
+
+                if (core.currLocation != null) {
+                    if (core.timer == null) core.timer = (ArmorStand) core.currLocation.getWorld().spawnEntity(core.currLocation, EntityType.ARMOR_STAND);
+                    core.timer.setVisible(false);
+                    core.timer.setInvulnerable(true);
+                    core.timer.setBasePlate(false);
+                    core.timer.setCustomNameVisible(true);
+                    core.timer.setCustomName(ChatColor.RED+Util.toDigiTime(core.endTime-Math.toIntExact(System.currentTimeMillis()/1000)));
+                }
+            } else this.cancel();
         }
     };
 }
