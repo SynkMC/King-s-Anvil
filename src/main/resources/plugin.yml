@@ -1,0 +1,16 @@
+name: KingsAnvil
+version: '1.0'
+main: cc.synkdev.kingsAnvil.KingsAnvil
+api-version: '1.13'
+authors: [ Synk ]
+description: An innovative and competitive minigame to give some more fun to your players!
+website: https://synkdev.cc
+softdepend: [PlaceholderAPI, Vault]
+depend:
+  - SynkLibs
+commands:
+  ka:
+    usage: "/ka"
+    description: "Main plugin command"
+    aliases:
+      - "kingsanvil"
