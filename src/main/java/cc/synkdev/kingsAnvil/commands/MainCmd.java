@@ -50,7 +50,15 @@ public class MainCmd implements CommandExecutor, TabCompleter {
                             return true;
                         }
 
-                        if (!MiniGameManager.endRunnable.isCancelled()) MiniGameManager.endRunnable.cancel();
+                        if (core.scheduler.containsValue(MiniGameManager.endRunnable)) {
+                            List<Long> remove = new ArrayList<>();
+                            core.scheduler.forEach((aLong, runnable) -> {
+                                if (runnable == MiniGameManager.endRunnable) remove.add(aLong);
+                            });
+                            for (Long l : remove) {
+                                core.scheduler.remove(l);
+                            }
+                        }
                         MiniGameManager.endRunnable.run();
                     }
                     break;

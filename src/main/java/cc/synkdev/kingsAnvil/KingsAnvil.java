@@ -62,6 +62,8 @@ public final class KingsAnvil extends JavaPlugin implements SynkPlugin {
     public List<LeaderboardLine> timeLeaderboard = new ArrayList<>();
     public List<LeaderboardLine> winLeaderboard = new ArrayList<>();
 
+    public Map<Long, Runnable> scheduler = new HashMap<>();
+
     private Boolean isCrashing = true;
 
     @Getter private Economy econ;
@@ -100,7 +102,7 @@ public final class KingsAnvil extends JavaPlugin implements SynkPlugin {
 
         gameLoop.runTaskTimer(this, 20L *loopDelay, 20L *loopDelay);
         saveLoop.runTaskTimer(this, 1200, 1200);
-
+        schedlr.runTaskTimer(this, 10L, 10L);
 
         if (sbd) {
             new PAPIExpa().register();
@@ -176,6 +178,21 @@ public final class KingsAnvil extends JavaPlugin implements SynkPlugin {
         econ = rsp.getProvider();
         return econ != null;
     }
+    private BukkitRunnable schedlr = new BukkitRunnable() {
+        @Override
+        public void run() {
+            List<Long> remove = new ArrayList<>();
+            scheduler.forEach((aLong, runnable) -> {
+                if (aLong<=System.currentTimeMillis()) {
+                    runnable.run();
+                    remove.add(aLong);
+                }
+            });
+            for (Long l : remove) {
+                scheduler.remove(l);
+            }
+        }
+    };
 
     @Override
     public String name() {

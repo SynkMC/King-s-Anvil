@@ -11,7 +11,6 @@ import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +37,13 @@ public class MiniGameManager {
             if (core.eventMsg) Bukkit.broadcastMessage(core.prefix() + ChatColor.YELLOW + Lang.translate("starting", Lang.translate("name")));
             core.isRunning = true;
 
-            endRunnable.runTaskLater(core, 20L * core.duration);
+            core.scheduler.put(System.currentTimeMillis()+(core.duration*1000L), endRunnable);
+            core.scheduler.put(System.currentTimeMillis()+500L, runningLoop);
             if (core.sbd) {
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     ScoreboardManager.createBoard(p);
                 }
 
-                runningLoop.runTaskTimer(core, 10, 10);
             }
 
             core.endTime = Math.toIntExact(System.currentTimeMillis() / 1000) + core.duration;
@@ -90,7 +89,7 @@ public class MiniGameManager {
         return true;
     }
 
-    public static BukkitRunnable endRunnable = new BukkitRunnable() {
+    public static Runnable endRunnable = new Runnable() {
         @Override
         public void run() {
             if (core.isRunning) {
@@ -101,7 +100,6 @@ public class MiniGameManager {
                 }
 
                 if (core.sbd) {
-                    runningLoop.cancel();
                     core.boardMap.forEach((uuid, fastBoard) -> {
                         fastBoard.delete();
                     });
@@ -114,13 +112,15 @@ public class MiniGameManager {
                     name = core.holder.getName();
                 }
 
-                if (core.timeHeld.containsKey(core.holder.getUniqueId())) {
-                    long time = System.currentTimeMillis() - core.timeTake;
-                    time = time + core.timeHeld.get(core.holder.getUniqueId());
-                    core.timeHeld.replace(core.holder.getUniqueId(), Math.toIntExact(time));
-                } else {
-                    long time = System.currentTimeMillis() - core.timeTake;
-                    core.timeHeld.put(core.holder.getUniqueId(), Math.toIntExact(time));
+                if (core.holder != null) {
+                    if (core.timeHeld.containsKey(core.holder.getUniqueId())) {
+                        long time = System.currentTimeMillis() - core.timeTake;
+                        time = time + core.timeHeld.get(core.holder.getUniqueId());
+                        core.timeHeld.replace(core.holder.getUniqueId(), Math.toIntExact(time));
+                    } else {
+                        long time = System.currentTimeMillis() - core.timeTake;
+                        core.timeHeld.put(core.holder.getUniqueId(), Math.toIntExact(time));
+                    }
                 }
                 core.timeHeld.forEach((uuid, integer) -> {
                     OfflinePlayer oP = Bukkit.getOfflinePlayer(uuid);
@@ -138,7 +138,7 @@ public class MiniGameManager {
                 if (core.eventMsg) Bukkit.broadcastMessage(core.prefix() + ChatColor.GOLD + Lang.translate("ended"));
                 if (core.eventMsg) Bukkit.broadcastMessage(core.prefix() + ChatColor.GOLD + Lang.translate("winner", name));
 
-                if (core.rewardTime && core.eventMsg)
+                if (core.rewardTime && core.eventMsg && RewardsManager.longestHolder() != null)
                     Bukkit.broadcastMessage(core.prefix() + ChatColor.GOLD + Lang.translate("winnerTime", RewardsManager.longestHolder().getName(), Lang.translate("name"), Util.toDigiTime(core.timeHeld.get(RewardsManager.longestHolder().getUniqueId())/1000)));
 
                 LeaderboardLine lL = LeaderboardsManager.get(core.winLeaderboard, core.holder);
@@ -157,7 +157,7 @@ public class MiniGameManager {
             }
         }
     };
-    public static BukkitRunnable runningLoop = new BukkitRunnable() {
+    public static Runnable runningLoop = new Runnable() {
         @Override
         public void run() {
             if (core.isRunning) {
@@ -183,7 +183,9 @@ public class MiniGameManager {
                     core.timer.setCustomNameVisible(true);
                     core.timer.setCustomName(ChatColor.RED+Util.toDigiTime(core.endTime-Math.toIntExact(System.currentTimeMillis()/1000)));
                 }
-            } else this.cancel();
+
+                core.scheduler.put(System.currentTimeMillis()+500L, this);
+            }
         }
     };
 }

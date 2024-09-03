@@ -76,6 +76,7 @@ public class LeaderboardsManager {
         }
     }
     public static LeaderboardLine get(List<LeaderboardLine> list, OfflinePlayer p) {
+        if (p == null) return null;
         LeaderboardLine lL = null;
         for (LeaderboardLine l : list) {
             if (Util.comparePlayers(l.getPlayer(), p)) lL = l;
