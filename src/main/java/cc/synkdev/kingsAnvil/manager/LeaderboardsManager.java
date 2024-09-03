@@ -61,12 +61,16 @@ public class LeaderboardsManager {
 
             writer = new BufferedWriter(new FileWriter(temp));
             for (LeaderboardLine lL : core.winLeaderboard) {
-                writer.write(lL.toString());
-                writer.newLine();
+                if (lL.toString() != null) {
+                    writer.write(lL.toString());
+                    writer.newLine();
+                }
             }
             for (LeaderboardLine lL : core.timeLeaderboard) {
-                writer.write(lL.toString());
-                writer.newLine();
+                if (lL.toString() != null) {
+                    writer.write(lL.toString());
+                    writer.newLine();
+                }
             }
             temp.renameTo(winsFile);
 

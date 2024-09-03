@@ -181,15 +181,18 @@ public final class KingsAnvil extends JavaPlugin implements SynkPlugin {
     private BukkitRunnable schedlr = new BukkitRunnable() {
         @Override
         public void run() {
-            List<Long> remove = new ArrayList<>();
-            scheduler.forEach((aLong, runnable) -> {
-                if (aLong<=System.currentTimeMillis()) {
-                    runnable.run();
-                    remove.add(aLong);
+            List<Runnable> run = new ArrayList<>();
+            Iterator<Map.Entry<Long, Runnable>> iterator = scheduler.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<Long, Runnable> entry = iterator.next();
+                if (entry.getKey() <= System.currentTimeMillis()) {
+                    run.add(entry.getValue());
+                    iterator.remove();
                 }
-            });
-            for (Long l : remove) {
-                scheduler.remove(l);
+            }
+
+            for (Runnable r : run) {
+                r.run();
             }
         }
     };

@@ -32,6 +32,7 @@ public class LeaderboardLine {
         return list;
     }
     public String toString() {
+        if (player == null) return null;
         return player.getUniqueId().toString()+";"+value;
     }
 }
