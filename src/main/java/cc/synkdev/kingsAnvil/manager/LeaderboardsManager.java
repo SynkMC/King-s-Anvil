@@ -12,6 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.*;
 
 public class LeaderboardsManager {
@@ -53,8 +54,8 @@ public class LeaderboardsManager {
                 writer.newLine();
             }
 
-            temp.renameTo(timeFile);
-
+            timeFile.delete();
+            Files.move(temp.toPath(), timeFile.toPath());
 
             temp = new File(core.getDataFolder(), "temp-leaderboard-wins-"+System.currentTimeMillis()+".yml");
             temp.createNewFile();
@@ -72,7 +73,8 @@ public class LeaderboardsManager {
                     writer.newLine();
                 }
             }
-            temp.renameTo(winsFile);
+            winsFile.delete();
+            Files.move(temp.toPath(), winsFile.toPath());
 
             writer.close();
         } catch (IOException e) {

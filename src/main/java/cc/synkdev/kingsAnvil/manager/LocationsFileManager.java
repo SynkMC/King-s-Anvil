@@ -4,6 +4,7 @@ import cc.synkdev.kingsAnvil.KingsAnvil;
 import cc.synkdev.kingsAnvil.Util;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.UUID;
 
 public class LocationsFileManager {
@@ -39,7 +40,8 @@ public class LocationsFileManager {
             });
 
             writer.close();
-            temp.renameTo(file);
+            file.delete();
+            Files.move(temp.toPath(), file.toPath());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

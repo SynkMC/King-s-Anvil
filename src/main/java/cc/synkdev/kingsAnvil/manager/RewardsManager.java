@@ -11,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,27 +44,6 @@ public class RewardsManager {
                     }
                 }
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public static void write() {
-        try {
-            File temp = new File(core.getDataFolder(), "temp-rewards-"+System.currentTimeMillis()+".yml");
-            temp.createNewFile();
-
-            BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
-            for (String s : header) {
-                writer.write(s);
-                writer.newLine();
-            }
-            writer.newLine();
-            for (Reward r : core.rewards) {
-                writer.write(r.toString());
-                writer.newLine();
-            }
-            writer.close();
-            temp.renameTo(file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,7 +57,8 @@ public class Lang {
                 }
             }
 
-            temp.delete();
+            file.delete();
+            Files.move(temp.toPath(), file.toPath());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

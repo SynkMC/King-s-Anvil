@@ -131,7 +131,6 @@ public final class KingsAnvil extends JavaPlugin implements SynkPlugin {
     public BukkitRunnable saveLoop = new BukkitRunnable() {
         @Override
         public void run() {
-            RewardsManager.write();
             LocationsFileManager.save();
             LeaderboardsManager.save();
         }
@@ -204,7 +203,7 @@ public final class KingsAnvil extends JavaPlugin implements SynkPlugin {
 
     @Override
     public String ver() {
-        return "1.0";
+        return "1.1";
     }
 
     @Override
