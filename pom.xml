@@ -6,7 +6,7 @@
 
     <groupId>cc.synkdev</groupId>
     <artifactId>KingsAnvil</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <name>KingsAnvil</name>
@@ -101,7 +101,7 @@
         <dependency>
             <groupId>cc.synkdev</groupId>
             <artifactId>SynkLibs</artifactId>
-            <version>1.5</version>
+            <version>1.7</version>
             <scope>provided</scope>
         </dependency>
 

@@ -2,8 +2,8 @@ package cc.synkdev.kingsAnvil.compatibility;
 
 import cc.synkdev.kingsAnvil.KingsAnvil;
 import cc.synkdev.kingsAnvil.Util;
-import cc.synkdev.kingsAnvil.manager.Lang;
 import cc.synkdev.kingsAnvil.objects.LeaderboardLine;
+import cc.synkdev.synkLibs.bukkit.Lang;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -28,9 +28,9 @@ public class PAPIExpa extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer oP, @NotNull String args) {
         if (args.equalsIgnoreCase("holder")) {
-            if (!core.isRunning || core.holder == null) return Lang.translate("noOne");
+            if (!core.isRunning || core.holder == null) return Lang.translate("noOne", core);
             
-            if (Util.comparePlayers(oP.getPlayer(), core.holder)) return Lang.translate("you");
+            if (Util.comparePlayers(oP.getPlayer(), core.holder)) return Lang.translate("you", core);
             
             return core.holder.getName();
         } else if (args.equalsIgnoreCase("time")) {
@@ -48,14 +48,14 @@ public class PAPIExpa extends PlaceholderExpansion {
             int spot = Integer.parseInt(args.split("_")[1]);
             if (core.winLeaderboard.size() >= spot) {
                 LeaderboardLine lL = core.winLeaderboard.get(spot-1);
-                return Lang.translate("leaderboardWins", spot+"", lL.getPlayer().getName(), lL.getValue()+"");
-            } else return Lang.translate("leaderboardWins", spot+"", Lang.translate("noOne"), 0+"");
+                return Lang.translate("leaderboardWins", core, spot+"", lL.getPlayer().getName(), lL.getValue()+"");
+            } else return Lang.translate("leaderboardWins", core, spot+"", Lang.translate("noOne", core), 0+"");
         } else if (args.contains("leaderboardtime_")) {
             int spot = Integer.parseInt(args.split("_")[1]);
             if (core.timeLeaderboard.size() >= spot) {
                 LeaderboardLine lL = core.timeLeaderboard.get(spot-1);
-                return Lang.translate("leaderboardTime", spot+"", lL.getPlayer().getName(), Util.toDigiTime(lL.getValue()/1000));
-            } else return Lang.translate("leaderboardTime", spot+"", Lang.translate("noOne"), "00:00");
+                return Lang.translate("leaderboardTime", core, spot+"", lL.getPlayer().getName(), Util.toDigiTime(lL.getValue()/1000));
+            } else return Lang.translate("leaderboardTime", core, spot+"", Lang.translate("noOne", core), "00:00");
         }
 
         return null; //

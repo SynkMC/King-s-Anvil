@@ -1,12 +1,11 @@
 package cc.synkdev.kingsAnvil.manager;
 
 import cc.synkdev.kingsAnvil.KingsAnvil;
+import cc.synkdev.synkLibs.bukkit.Lang;
 import fr.mrmicky.fastboard.FastBoard;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.*;
 import java.net.URL;
@@ -58,7 +57,7 @@ public class ScoreboardManager {
             }
 
             FastBoard fB = new FastBoard(p);
-            fB.updateTitle(ChatColor.YELLOW+""+ChatColor.BOLD+Lang.translate("name").toUpperCase());
+            fB.updateTitle(ChatColor.YELLOW+""+ChatColor.BOLD+ Lang.translate("name", core).toUpperCase());
             fB.updateLines(list);
 
             core.boardMap.put(p.getUniqueId(), fB);

@@ -3,6 +3,7 @@ package cc.synkdev.kingsAnvil.manager;
 import cc.synkdev.kingsAnvil.KingsAnvil;
 import cc.synkdev.kingsAnvil.Util;
 import cc.synkdev.kingsAnvil.objects.LeaderboardLine;
+import cc.synkdev.synkLibs.bukkit.Lang;
 import fr.mrmicky.fastboard.FastBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,7 +38,7 @@ public class EventListener implements Listener {
 
         core.holder = p;
 
-        Bukkit.broadcastMessage(core.prefix()+ChatColor.YELLOW+Lang.translate("pickUp", Lang.translate("name"), p.getName()));
+        Bukkit.broadcastMessage(core.prefix()+ChatColor.YELLOW+Lang.translate("pickUp", core, Lang.translate("name", core), p.getName()));
 
         core.currLocation = null;
 
@@ -81,7 +82,7 @@ public class EventListener implements Listener {
         if (core.isRunning && Util.comparePlayers(p, core.holder)) {
             core.holder = null;
 
-            Bukkit.broadcastMessage(core.prefix() + ChatColor.YELLOW + Lang.translate("holderDisconnected", Lang.translate("name")));
+            Bukkit.broadcastMessage(core.prefix() + ChatColor.YELLOW + Lang.translate("holderDisconnected", core, Lang.translate("name", core)));
 
             MiniGameManager.reRollSpawn();
         }
@@ -105,7 +106,7 @@ public class EventListener implements Listener {
             if (p.getLastDamageCause() instanceof EntityDamageByEntityEvent && isPlayerDamage((EntityDamageByEntityEvent) p.getLastDamageCause()) != null) {
                 Player dmgr = isPlayerDamage((EntityDamageByEntityEvent) p.getLastDamageCause());
 
-                Bukkit.broadcastMessage(core.prefix()+ ChatColor.YELLOW+Lang.translate("holderKilled", p.getName(), dmgr.getName(), Lang.translate("name")));
+                Bukkit.broadcastMessage(core.prefix()+ ChatColor.YELLOW+ Lang.translate("holderKilled", core, p.getName(), dmgr.getName(), Lang.translate("name", core)));
                 core.holder = dmgr;
 
                 for (Player pl : Bukkit.getOnlinePlayers()) {

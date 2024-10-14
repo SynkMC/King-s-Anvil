@@ -3,6 +3,7 @@ package cc.synkdev.kingsAnvil.manager;
 import cc.synkdev.kingsAnvil.KingsAnvil;
 import cc.synkdev.kingsAnvil.Util;
 import cc.synkdev.kingsAnvil.objects.LeaderboardLine;
+import cc.synkdev.synkLibs.bukkit.Lang;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -106,25 +107,25 @@ public class LeaderboardsManager {
     }
     public static void send(Player p, String type) {
         if (type.equalsIgnoreCase("time")) {
-            p.sendMessage(core.prefix()+ ChatColor.GOLD+Lang.translate("leaderboard"));
+            p.sendMessage(core.prefix()+ ChatColor.GOLD+ Lang.translate("leaderboard", core));
             for (int i = 1; i < 11; i++) {
                 p.sendMessage(PlaceholderAPI.setPlaceholders(p, "%kingsanvil_leaderboardtime_"+i+"%"));
             }
             p.spigot().sendMessage(switcher("wins"));
         } else if (type.equalsIgnoreCase("wins")) {
-            p.sendMessage(core.prefix()+ ChatColor.GOLD+Lang.translate("leaderboard"));
+            p.sendMessage(core.prefix()+ ChatColor.GOLD+Lang.translate("leaderboard", core));
             for (int i = 1; i < 11; i++) {
                 p.sendMessage(PlaceholderAPI.setPlaceholders(p, "%kingsanvil_leaderboard_"+i+"%"));
             }
             p.spigot().sendMessage(switcher("time"));
         } else {
-            p.sendMessage(core.prefix()+ChatColor.RED+Lang.translate("incorrectLeaderboard", type));
+            p.sendMessage(core.prefix()+ChatColor.RED+Lang.translate("incorrectLeaderboard", core, type));
         }
     }
     private static TextComponent switcher(String type) {
         TextComponent prefix = new TextComponent(core.prefix());
 
-        TextComponent tC = new TextComponent(Lang.translate("leaderboardType"));
+        TextComponent tC = new TextComponent(Lang.translate("leaderboardType", core));
         tC.setColor(net.md_5.bungee.api.ChatColor.GOLD);
         tC.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ka leaderboard "+type));
 

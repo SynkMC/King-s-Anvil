@@ -6,6 +6,7 @@ import cc.synkdev.kingsAnvil.manager.EventListener;
 import cc.synkdev.kingsAnvil.manager.*;
 import cc.synkdev.kingsAnvil.objects.Reward;
 import cc.synkdev.kingsAnvil.objects.LeaderboardLine;
+import cc.synkdev.synkLibs.bukkit.Lang;
 import cc.synkdev.synkLibs.bukkit.SynkLibs;
 import cc.synkdev.synkLibs.bukkit.Utils;
 import cc.synkdev.synkLibs.components.SynkPlugin;
@@ -72,12 +73,10 @@ public final class KingsAnvil extends JavaPlugin implements SynkPlugin {
     public void onEnable() {
         instance = this;
 
-        Lang.init();
+        langMap.clear();
+        langMap.putAll(Lang.init(this, new File(getDataFolder(),"lang.json")));
 
         new Metrics(this, 23133);
-
-        SynkLibs.setSpl(this);
-        Utils.checkUpdate(this, this);
 
         dlConfig();
         loadConfig();
@@ -203,7 +202,7 @@ public final class KingsAnvil extends JavaPlugin implements SynkPlugin {
 
     @Override
     public String ver() {
-        return "1.1";
+        return "1.2";
     }
 
     @Override
@@ -213,6 +212,16 @@ public final class KingsAnvil extends JavaPlugin implements SynkPlugin {
 
     @Override
     public String prefix() {
-        return ChatColor.translateAlternateColorCodes('&', "&r&8[&6"+Lang.translate("name")+"&8] » &r");
+        return ChatColor.translateAlternateColorCodes('&', "&r&8[&6"+Lang.translate("name", core)+"&8] » &r");
+    }
+
+    @Override
+    public String lang() {
+        return "https://synkdev.cc/storage/translations/lang-pld/King%27s%20Anvil/lang-ka.json";
+    }
+
+    @Override
+    public Map<String, String> langMap() {
+        return langMap;
     }
 }

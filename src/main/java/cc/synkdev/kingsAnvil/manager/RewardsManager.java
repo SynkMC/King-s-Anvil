@@ -4,6 +4,7 @@ import cc.synkdev.kingsAnvil.KingsAnvil;
 import cc.synkdev.kingsAnvil.Util;
 import cc.synkdev.kingsAnvil.objects.Reward;
 import cc.synkdev.kingsAnvil.objects.RewardType;
+import cc.synkdev.synkLibs.bukkit.Lang;
 import cc.synkdev.synkLibs.bukkit.SynkLibs;
 import cc.synkdev.synkLibs.bukkit.Utils;
 import org.bukkit.Bukkit;
@@ -51,12 +52,12 @@ public class RewardsManager {
     public static void giveRewards() {
         if (core.rewards.isEmpty()) {
             SynkLibs.setSpl(core);
-            Utils.log(ChatColor.RED + Lang.translate("noRewards"));
+            Utils.log(ChatColor.RED + Lang.translate("noRewards", core));
             return;
         }
 
         if (core.holder == null) {
-            Bukkit.broadcastMessage(core.prefix() + ChatColor.RED + Lang.translate("noHolder"));
+            Bukkit.broadcastMessage(core.prefix() + ChatColor.RED + Lang.translate("noHolder", core));
             return;
         }
 

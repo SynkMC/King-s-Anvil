@@ -3,6 +3,7 @@ package cc.synkdev.kingsAnvil.manager;
 import cc.synkdev.kingsAnvil.KingsAnvil;
 import cc.synkdev.kingsAnvil.Util;
 import cc.synkdev.kingsAnvil.objects.LeaderboardLine;
+import cc.synkdev.synkLibs.bukkit.Lang;
 import cc.synkdev.synkLibs.bukkit.SynkLibs;
 import cc.synkdev.synkLibs.bukkit.Utils;
 import fr.mrmicky.fastboard.FastBoard;
@@ -23,18 +24,18 @@ public class MiniGameManager {
         SynkLibs.setSpl(core);
 
         if (core.isRunning) {
-            Utils.log(Lang.translate("alreadyOn", Lang.translate("name")));
+            Utils.log(Lang.translate("alreadyOn", core, Lang.translate("name", core)));
 
             return;
         }
 
         if (Bukkit.getOnlinePlayers().size() < core.minOnline) {
-            Utils.log(ChatColor.RED + Lang.translate("notEnoughStart"));
+            Utils.log(ChatColor.RED + Lang.translate("notEnoughStart", core));
             return;
         }
 
         if (reRollSpawn()) {
-            if (core.eventMsg) Bukkit.broadcastMessage(core.prefix() + ChatColor.YELLOW + Lang.translate("starting", Lang.translate("name")));
+            if (core.eventMsg) Bukkit.broadcastMessage(core.prefix() + ChatColor.YELLOW + Lang.translate("starting", core, Lang.translate("name", core)));
             core.isRunning = true;
 
             core.scheduler.put(System.currentTimeMillis()+(core.duration*1000L), endRunnable);
@@ -65,14 +66,14 @@ public class MiniGameManager {
         SynkLibs.setSpl(core);
 
         if (loc == null) {
-            Utils.log(ChatColor.RED + Lang.translate("noLocs"));
+            Utils.log(ChatColor.RED + Lang.translate("noLocs", core));
 
             return false;
         }
 
         if (loc.getBlock().getType() != Material.AIR) {
             if (loc.getBlock().getType() != Material.ANVIL) {
-                Utils.log(ChatColor.RED + Lang.translate("obstructed", Util.locToStringReadable(loc)));
+                Utils.log(ChatColor.RED + Lang.translate("obstructed", core, Util.locToStringReadable(loc)));
                 start();
 
                 return false;
@@ -81,7 +82,7 @@ public class MiniGameManager {
 
         loc.getBlock().setType(Material.ANVIL);
         core.currLocation = loc;
-        Bukkit.broadcastMessage(core.prefix() + ChatColor.YELLOW + Lang.translate("spawnMsg", Lang.translate("name"), Util.locToStringReadable(loc)));
+        Bukkit.broadcastMessage(core.prefix() + ChatColor.YELLOW + Lang.translate("spawnMsg", core, Lang.translate("name", core), Util.locToStringReadable(loc)));
 
         for (Player pl : Bukkit.getOnlinePlayers()) {
             pl.playSound(pl.getLocation(), "block.anvil.place", 1, 1);
@@ -107,7 +108,7 @@ public class MiniGameManager {
                 }
 
                 String name;
-                if (core.holder == null) name = ChatColor.RED + Lang.translate("noOne");
+                if (core.holder == null) name = ChatColor.RED + Lang.translate("noOne", core);
                 else {
                     name = core.holder.getName();
                 }
@@ -135,11 +136,11 @@ public class MiniGameManager {
                 LeaderboardsManager.sort();
 
                 RewardsManager.giveRewards();
-                if (core.eventMsg) Bukkit.broadcastMessage(core.prefix() + ChatColor.GOLD + Lang.translate("ended"));
-                if (core.eventMsg) Bukkit.broadcastMessage(core.prefix() + ChatColor.GOLD + Lang.translate("winner", name));
+                if (core.eventMsg) Bukkit.broadcastMessage(core.prefix() + ChatColor.GOLD + Lang.translate("ended", core));
+                if (core.eventMsg) Bukkit.broadcastMessage(core.prefix() + ChatColor.GOLD + Lang.translate("winner", core, name));
 
                 if (core.rewardTime && core.eventMsg && RewardsManager.longestHolder() != null)
-                    Bukkit.broadcastMessage(core.prefix() + ChatColor.GOLD + Lang.translate("winnerTime", RewardsManager.longestHolder().getName(), Lang.translate("name"), Util.toDigiTime(core.timeHeld.get(RewardsManager.longestHolder().getUniqueId())/1000)));
+                    Bukkit.broadcastMessage(core.prefix() + ChatColor.GOLD + Lang.translate("winnerTime", core, RewardsManager.longestHolder().getName(), Lang.translate("name", core), Util.toDigiTime(core.timeHeld.get(RewardsManager.longestHolder().getUniqueId())/1000)));
 
                 LeaderboardLine lL = LeaderboardsManager.get(core.winLeaderboard, core.holder);
                 if (lL != null) {
