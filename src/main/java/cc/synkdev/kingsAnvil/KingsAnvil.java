@@ -212,7 +212,7 @@ public final class KingsAnvil extends JavaPlugin implements SynkPlugin {
 
     @Override
     public String prefix() {
-        return ChatColor.translateAlternateColorCodes('&', "&r&8[&6"+Lang.translate("name", core)+"&8] » &r");
+        return ChatColor.translateAlternateColorCodes('&', "&r&8[&6"+Lang.translate("name", this)+"&8] » &r");
     }
 
     @Override

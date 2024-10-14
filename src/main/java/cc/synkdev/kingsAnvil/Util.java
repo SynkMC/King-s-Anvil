@@ -1,6 +1,6 @@
 package cc.synkdev.kingsAnvil;
 
-import cc.synkdev.kingsAnvil.manager.Lang;
+import cc.synkdev.synkLibs.bukkit.Lang;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -9,8 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-
-import java.util.List;
 
 public class Util {
     private static final KingsAnvil core = KingsAnvil.getInstance();
@@ -25,13 +23,13 @@ public class Util {
         StringBuilder sb = new StringBuilder();
         if (core.coordsWorld) sb.append(l.getWorld().getName()).append(", ");
 
-        sb.append(l.getBlockX()+", "+l.getBlockY()+", "+l.getBlockZ());
+        sb.append(l.getBlockX()).append(", ").append(l.getBlockY()).append(", ").append(l.getBlockZ());
         return sb.toString();
     }
     public static void sendLocsList(CommandSender p) {
-        p.sendMessage(core.prefix()+ ChatColor.GOLD+ Lang.translate("locsList")+":");
+        p.sendMessage(core.prefix()+ ChatColor.GOLD+ Lang.translate("locsList", core)+":");
 
-        TextComponent hover = new TextComponent(Lang.translate("clickTp"));
+        TextComponent hover = new TextComponent(Lang.translate("clickTp", core));
         hover.setColor(net.md_5.bungee.api.ChatColor.YELLOW);
         TextComponent[] hoverS = { hover };
 
@@ -52,12 +50,12 @@ public class Util {
             p.spigot().sendMessage(comp);
         });
 
-        TextComponent hover1 = new TextComponent(Lang.translate("addNewLore"));
+        TextComponent hover1 = new TextComponent(Lang.translate("addNewLore", core));
         hover1.setColor(net.md_5.bungee.api.ChatColor.GREEN);
 
         TextComponent[] hovers1 = { hover1 };
 
-        TextComponent add = new TextComponent("["+Lang.translate("addNew")+"]");
+        TextComponent add = new TextComponent("["+Lang.translate("addNew", core)+"]");
         add.setColor(net.md_5.bungee.api.ChatColor.GREEN);
         add.setBold(true);
         add.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hovers1));
